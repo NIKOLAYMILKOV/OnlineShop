@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProductCreateReqDTO {
+public class ProductReqDTO {
     private String name;
     private Integer quantity;
     private Double price;

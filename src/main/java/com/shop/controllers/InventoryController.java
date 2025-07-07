@@ -1,11 +1,12 @@
 package com.shop.controllers;
 
-import com.shop.model.products.dtos.ProductCreateReqDTO;
+import com.shop.model.RespMessageDTO;
+import com.shop.model.products.dtos.ProductReqDTO;
 import com.shop.model.products.dtos.ProductRespDTO;
-import com.shop.model.products.dtos.ProductUpdateReqDTO;
 import com.shop.services.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +27,7 @@ public class InventoryController extends BaseController {
     @PostMapping("/products")
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductRespDTO addProduct(@RequestBody ProductCreateReqDTO newProduct) {
+    public ProductRespDTO addProduct(@RequestBody ProductReqDTO newProduct) {
         return inventoryService.addProduct(newProduct);
     }
 
@@ -40,7 +41,14 @@ public class InventoryController extends BaseController {
     @PutMapping("/products/{id}")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    public ProductRespDTO updateProduct(@RequestBody ProductUpdateReqDTO newProduct, @PathVariable Integer id) {
+    public ProductRespDTO updateProduct(@RequestBody ProductReqDTO newProduct, @PathVariable Integer id) {
         return inventoryService.updateProduct(newProduct, id);
+    }
+
+    @DeleteMapping("/products/{id}")
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    public RespMessageDTO deleteProduct(@RequestBody ProductReqDTO newProduct, @PathVariable Integer id) {
+        return inventoryService.delete(id);
     }
 }

@@ -7,6 +7,7 @@ import com.shop.model.products.ProductEntity;
 import com.shop.model.products.dtos.ProductReqDTO;
 import com.shop.model.products.dtos.ProductRespDTO;
 import com.shop.repositories.InventoryRepository;
+import com.shop.repositories.LocationRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,8 @@ public class InventoryService {
     private InventoryRepository inventoryRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private LocationRepository locationRepository;
 
     public ProductRespDTO addProduct(ProductReqDTO productReq) {
         ProductEntity productEntity = modelMapper.map(productReq, ProductEntity.class);
@@ -30,7 +33,6 @@ public class InventoryService {
         if (inventoryRepository.existsByLocation(productReq.getLocation())) {
             throw new BadRequestException("Product on that location already exists");
         }
-
         return modelMapper.map(inventoryRepository.save(productEntity), ProductRespDTO.class);
     }
 
@@ -41,14 +43,14 @@ public class InventoryService {
         ProductEntity productEntity = inventoryRepository.findById(id)
             .orElseThrow(() -> new NotFoundException("No product with that id"));
         if (productUpdateReq.getName() != null) {
+            if (inventoryRepository.existsByName(productUpdateReq.getName())) {
+                throw new BadRequestException("Product with that name already exists");
+            }
             productEntity.setName(productUpdateReq.getName());
         }
         if (productUpdateReq.getQuantity() != null) {
             if (productUpdateReq.getQuantity() < 0) {
                 throw new BadRequestException("Quantity cannot be less then 0");
-            }
-            if (productUpdateReq.getQuantity() == 0) {
-                delete(id);
             }
             productEntity.setQuantity(productUpdateReq.getQuantity());
         }
@@ -59,7 +61,8 @@ public class InventoryService {
             productEntity.setPrice(productUpdateReq.getPrice());
         }
         if (productUpdateReq.getLocation() != null ) {
-            if (inventoryRepository.existsByLocation(productUpdateReq.getLocation())) {
+            if (inventoryRepository.existsByLocation(productUpdateReq.getLocation()) &&
+                !productUpdateReq.getLocation().equals(productEntity.getLocation())) {
                 throw new BadRequestException("This location is already occupied");
             }
             productEntity.setLocation(productUpdateReq.getLocation());
@@ -97,7 +100,7 @@ public class InventoryService {
             throw new BadRequestException("Quantity is mandatory and cannot be less than or equal to 0");
         }
         if (product.getLocation() == null) {
-            throw new BadRequestException("Location is mandatory");
+            throw new BadRequestException("LocationEntity is mandatory");
         }
         if (product.getLocation().getX() == null || product.getLocation().getX() <= 0) {
             throw new BadRequestException("X coordinate is mandatory and cannot be less than or equal to 0");

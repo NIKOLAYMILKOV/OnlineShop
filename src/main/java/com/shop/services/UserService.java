@@ -24,7 +24,7 @@ public class UserService {
     public UserRespDTO registerUser(UserRegisterDTO registerUserDTO) {
         validateRegister(registerUserDTO);
         if (userRepository.existsByUsername(registerUserDTO.getUsername())) {
-            throw new BadRequestException("UserEntity with that username already exists");
+            throw new BadRequestException("User with that username already exists");
         }
         UserEntity user = modelMapper.map(registerUserDTO, UserEntity.class);
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));

@@ -1,55 +1,44 @@
-package com.shop.model.products;
+package com.shop.model.order;
 
 import com.shop.model.LocationEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
-@Table(name = "products")
-public class ProductEntity {
+@Table(name = "orders")
+public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     @Column
-    private String name;
-
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
+//    @Column
+//    private List<LocationEntity> locations;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemEntity> items = new ArrayList<>();
     @Column
-    private Integer quantity;
-
-    @Column
-    private Double price;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "location_id", referencedColumnName = "id")
-    private LocationEntity location;
-
-    @Column(name = "creation_time")
     @CreationTimestamp
     private LocalDateTime createdOn;
-
-    @Column(name = "update_time")
-    @UpdateTimestamp
-    private LocalDateTime updatedOn;
 }

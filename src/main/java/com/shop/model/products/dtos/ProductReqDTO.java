@@ -1,6 +1,6 @@
 package com.shop.model.products.dtos;
 
-import com.shop.model.Location;
+import com.shop.model.LocationEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,5 +12,5 @@ public class ProductReqDTO {
     private String name;
     private Integer quantity;
     private Double price;
-    private Location location;
+    private LocationEntity location;
 }

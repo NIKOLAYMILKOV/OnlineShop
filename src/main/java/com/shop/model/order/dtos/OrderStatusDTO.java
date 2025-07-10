@@ -1,7 +1,7 @@
-package com.shop.model;
+package com.shop.model.order.dtos;
 
-import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,8 +10,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Embeddable
-public class Location {
-    private Integer x;
-    private Integer y;
+@Builder
+public class OrderStatusDTO {
+    private Integer id;
+    private String status;
 }

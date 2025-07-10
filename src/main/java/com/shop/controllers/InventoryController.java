@@ -48,7 +48,7 @@ public class InventoryController extends BaseController {
     @DeleteMapping("/products/{id}")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    public RespMessageDTO deleteProduct(@RequestBody ProductReqDTO newProduct, @PathVariable Integer id) {
+    public RespMessageDTO deleteProduct(@PathVariable Integer id) {
         return inventoryService.delete(id);
     }
 }

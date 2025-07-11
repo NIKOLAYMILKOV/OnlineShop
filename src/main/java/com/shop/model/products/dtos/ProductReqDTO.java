@@ -1,6 +1,6 @@
 package com.shop.model.products.dtos;
 
-import com.shop.model.LocationEntity;
+import com.shop.model.location.LocationEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

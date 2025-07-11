@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 
-public class OrderCreateResp {
+public class OrderCreateRespDTO {
     private OrderStatus status;
     private String message;
 }

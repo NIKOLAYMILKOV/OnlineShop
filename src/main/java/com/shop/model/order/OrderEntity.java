@@ -1,6 +1,6 @@
 package com.shop.model.order;
 
-import com.shop.model.LocationEntity;
+import com.shop.model.OrderLocationEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,13 +31,17 @@ public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @Column
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
-//    @Column
-//    private List<LocationEntity> locations;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderLocationEntity> locations = new ArrayList<>();
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemEntity> items = new ArrayList<>();
+
     @Column
     @CreationTimestamp
     private LocalDateTime createdOn;

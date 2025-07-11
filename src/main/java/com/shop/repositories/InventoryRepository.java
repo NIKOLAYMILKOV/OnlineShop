@@ -1,6 +1,6 @@
 package com.shop.repositories;
 
-import com.shop.model.LocationEntity;
+import com.shop.model.location.LocationEntity;
 import com.shop.model.products.ProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -49,4 +49,15 @@ public interface InventoryRepository extends JpaRepository<ProductEntity, Intege
         Integer y = location.getY();
         return countProductsAtLocation(x, y) > 0;
     }
+
+    @Query(
+        value = """
+              SELECT l.id, l.location_x, l.location_y
+              FROM products p
+              JOIN locations l ON p.location_id = l.id
+              WHERE p.name = :name
+            """,
+        nativeQuery = true
+    )
+    LocationEntity findLocationByName(@Param("name") String name);
 }

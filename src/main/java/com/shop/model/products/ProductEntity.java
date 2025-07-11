@@ -1,6 +1,6 @@
 package com.shop.model.products;
 
-import com.shop.model.LocationEntity;
+import com.shop.model.location.LocationEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
